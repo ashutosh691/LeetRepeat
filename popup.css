@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+    width: 340px;
+    padding: 10px;
+    background: #f3f4f6;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .section {
+    margin-bottom: 12px;
+  }
+  
+  .section h3 {
+    font-size: 13px;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+    color: #374151;
+  }
+  
+  .problem {
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  .title {
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  
+  .meta {
+    font-size: 12px;
+    color: gray;
+  }
+  
+  .status {
+    font-weight: bold;
+    margin-top: 4px;
+    font-size: 12px;
+  }
+  
+  .status.due {
+    color: #dc2626;   /* red */
+  }
+  
+  .status.overdue {
+    color: #111827;   /* black */
+  }
+  
+  .status.upcoming {
+    color: #d97706;   /* orange */
+  }
+  
+  button {
+    margin-top: 6px;
+    width: 100%;
+    padding: 6px;
+    border: none;
+    border-radius: 6px;
+    background: #3b82f6;
+    color: white;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background: #2563eb;
+  }
