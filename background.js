@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-console.log("LeetRepeat background running");
-
-// Toggle for testing vs production
-=======
 // Production mode
->>>>>>> f30d31b (Updated file structure)
 const TEST_MODE = false;
 
 // Schedule alarms
