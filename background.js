@@ -1,7 +1,7 @@
 console.log("LeetRepeat background running");
 
 // Toggle for testing vs production
-const TEST_MODE = true;
+const TEST_MODE = false;
 
 // Schedule alarms
 function scheduleRevisions(problemId, daysArray) {
