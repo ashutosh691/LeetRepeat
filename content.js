@@ -1,57 +1,103 @@
 let alreadySent = false;
 let submissionStarted = false;
+let previousResultText = "";
+let resultChanged = false;
 
-// Detect submit click
+// Detect a LeetCode submission action
 document.addEventListener("click", (e) => {
   const target = e.target;
+  const submitButton = target?.closest("button");
 
-  if (target && target.innerText && target.innerText.includes("Submit")) {
+  if (
+    submitButton &&
+    submitButton.innerText.trim().toLowerCase().includes("submit")
+  ) {
     submissionStarted = true;
     alreadySent = false;
+    resultChanged = false;
+
+    // Store the previous submission result
+    const resultElement = document.querySelector(
+      '[data-e2e-locator="submission-result"]'
+    );
+
+    previousResultText = resultElement?.innerText.trim() || "";
   }
 });
 
-// Observe submission result
-const observer = new MutationObserver(() => {
+// Find the current problem title
+function getProblemTitle() {
+  const titleElement = document.querySelector('[data-cy="question-title"]');
+
+  if (titleElement?.innerText.trim()) {
+    return titleElement.innerText.trim();
+  }
+
+  // Get the title from the page title
+  const pageTitle = document.title.split(" - LeetCode")[0].trim();
+
+  if (pageTitle) {
+    return pageTitle;
+  }
+
+  // Use the problem slug if the title is unavailable
+  const slug = window.location.pathname.split("/")[2];
+
+  return slug ? slug.replace(/-/g, " ") : "Unknown Problem";
+}
+
+// Send the Accepted problem to the extension background
+function trackAcceptedSubmission() {
   if (!submissionStarted || alreadySent) return;
 
-  const acceptedElement = document.querySelector(
+  const resultElement = document.querySelector(
     '[data-e2e-locator="submission-result"]'
   );
 
-  if (acceptedElement && acceptedElement.innerText.includes("Accepted")) {
-    alreadySent = true;
-    submissionStarted = false;
+  if (!resultElement) return;
 
-    let title = "Unknown Problem";
+  const resultText = resultElement.innerText.trim();
 
-    const titleElement =
-      document.querySelector('[data-cy="question-title"]') ||
-      document.querySelector("h1");
+  // Wait until the submission result changes
+  if (resultText !== previousResultText) {
+    resultChanged = true;
+  }
 
-    if (titleElement) {
-      title = titleElement.innerText;
-    }
+  // Ignore the previous submission result
+  if (!resultChanged) return;
 
-    if (title === "Unknown Problem") {
-      const slug = window.location.pathname.split("/")[2];
-      title = slug.replace(/-/g, " ");
-    }
+  // Track only Accepted submissions
+  if (!resultText.includes("Accepted")) return;
 
-    const problemSlug = window.location.pathname.split("/")[2];
-    const url = `https://leetcode.com/problems/${problemSlug}/`;
+  alreadySent = true;
+  submissionStarted = false;
 
+  const problemSlug = window.location.pathname.split("/")[2];
+  if (!problemSlug) return;
+
+  const url = `https://leetcode.com/problems/${problemSlug}/`;
+
+  // Send the Accepted submission to the background script
+  try {
     if (chrome.runtime?.id) {
       chrome.runtime.sendMessage({
         type: "PROBLEM_SOLVED",
-        title,
+        title: getProblemTitle(),
         url
       });
     }
+  } catch (error) {
+    console.error("LeetRepeat: Failed to track submission.", error);
   }
-});
+}
 
-observer.observe(document.body, {
-  childList: true,
-  subtree: true
-});
+// Watch for LeetCode's dynamically updated submission result
+const observer = new MutationObserver(trackAcceptedSubmission);
+
+if (document.body) {
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+}
