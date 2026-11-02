@@ -64,4 +64,4 @@ This Privacy Policy may be updated if the extension's functionality or data prac
 
 For questions about this Privacy Policy or LeetRepeat, contact:
 
-**Email:** ashutoshishunishu2gmail.com
+**Email:** ashutoshishunishu@gmail.com
