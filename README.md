@@ -43,7 +43,3 @@ LeetRepeat is a Chrome extension that applies spaced repetition to LeetCode prob
 - Adaptive intervals (Anki-style)
 - Sync across devices
 - Analytics dashboard
-
-## License
-
-MIT License
