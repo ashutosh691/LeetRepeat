@@ -1,26 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LeetRepeat</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <h2>LeetRepeat</h2>
+  <header class="header">
+    <div class="brand">
+      <div class="brand-icon">LR</div>
+      <div>
+        <h1>LeetRepeat</h1>
+        <p>Keep the patterns fresh.</p>
+      </div>
+    </div>
+    <button id="refreshBtn" class="icon-btn" title="Refresh dashboard" aria-label="Refresh dashboard">↻</button>
+  </header>
 
-  <div class="section">
-    <h3>DUE</h3>
-    <div id="due"></div>
+  <section class="summary" aria-label="Revision summary">
+    <div class="summary-card">
+      <span class="summary-label">Due today</span>
+      <strong id="dueCount">0</strong>
+    </div>
+    <div class="summary-card">
+      <span class="summary-label">Overdue</span>
+      <strong id="overdueCount">0</strong>
+    </div>
+    <div class="summary-card">
+      <span class="summary-label">Completed</span>
+      <strong id="completedCount">0</strong>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <label class="search-wrap">
+      <span aria-hidden="true">⌕</span>
+      <input id="searchInput" type="search" placeholder="Search problems..." autocomplete="off">
+    </label>
+    <select id="sortSelect" aria-label="Sort problems">
+      <option value="status">Priority</option>
+      <option value="title">Title</option>
+      <option value="date">Recently solved</option>
+    </select>
   </div>
 
-  <div class="section">
-    <h3>OVERDUE</h3>
-    <div id="overdue"></div>
-  </div>
+  <main id="problemList">
+    <div class="loading">Loading your revisions...</div>
+  </main>
 
-  <div class="section">
-    <h3>UPCOMING</h3>
-    <div id="upcoming"></div>
-  </div>
+  <footer>
+    <span id="footerText">Revisions: 7 · 30 · 90 days</span>
+    <a href="https://leetcode.com/" target="_blank" rel="noopener">LeetCode ↗</a>
+  </footer>
 
   <script src="popup.js"></script>
 </body>
